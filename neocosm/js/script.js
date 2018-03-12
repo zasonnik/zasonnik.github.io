@@ -41,21 +41,21 @@ $(document).ready(function(){
   });
 
   try{
-    var socket = new WebSocket("ws://localhost:8000");
-
-    socket.onerror = function(error){
-      throw new Error("Websocket error "+error);
-    };
-
-    socket.onmessage = function(event) {
-      var data = JSON.parse(event.data);
-      if(data.type=="touch"){
-        var parent_element = table_area[0];
-        var x_touch = parent_element.offsetLeft + (parent_element.offsetWidth*parseFloat(data.x));
-        var y_touch = parent_element.offsetTop + (parent_element.offsetHeight*parseFloat(data.y));
-        touch_on_point(x_touch, y_touch);
-      }
-    };
+    // var socket = new WebSocket("ws://localhost:8000");
+    //
+    // socket.onerror = function(error){
+    //   throw new Error("Websocket error "+error);
+    // };
+    //
+    // socket.onmessage = function(event) {
+    //   var data = JSON.parse(event.data);
+    //   if(data.type=="touch"){
+    //     var parent_element = table_area[0];
+    //     var x_touch = parent_element.offsetLeft + (parent_element.offsetWidth*parseFloat(data.x));
+    //     var y_touch = parent_element.offsetTop + (parent_element.offsetHeight*parseFloat(data.y));
+    //     touch_on_point(x_touch, y_touch);
+    //   }
+    // };
   }catch(e){
     console.error(e);
   }

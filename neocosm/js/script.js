@@ -39,20 +39,26 @@ $(document).ready(function(){
     var origEvent = event.originalEvent;
     clicked_on(origEvent.x, origEvent.y);
   });
-  var socket = new WebSocket("ws://localhost:8000");
-  socket.onerror = function(error){
-    alert("Ошибка " + error.message);
-  };
 
-  socket.onmessage = function(event) {
-    var data = JSON.parse(event.data);
-    if(data.type=="touch"){
-      var parent_element = table_area[0];
-      var x_touch = parent_element.offsetLeft + (parent_element.offsetWidth*parseFloat(data.x));
-      var y_touch = parent_element.offsetTop + (parent_element.offsetHeight*parseFloat(data.y));
-      touch_on_point(x_touch, y_touch);
-    }
-  };
+  try{
+    var socket = new WebSocket("ws://localhost:8000");
+
+    socket.onerror = function(error){
+      throw new Error("Websocket error "+error);
+    };
+
+    socket.onmessage = function(event) {
+      var data = JSON.parse(event.data);
+      if(data.type=="touch"){
+        var parent_element = table_area[0];
+        var x_touch = parent_element.offsetLeft + (parent_element.offsetWidth*parseFloat(data.x));
+        var y_touch = parent_element.offsetTop + (parent_element.offsetHeight*parseFloat(data.y));
+        touch_on_point(x_touch, y_touch);
+      }
+    };
+  }catch(e){
+    console.error(e);
+  }
 
   function touch_on_point(x, y){
     var touch_div = document.createElement("div");
